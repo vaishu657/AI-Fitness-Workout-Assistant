@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Fitness Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css" />
+ 
+</head>
+<body>
+
+<!-- Professional Login Page -->
+<div id="login-container">
+  <form id="loginForm" class="login-form">
+    <div class="login-header">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="AI Fitness Logo" class="login-logo" />
+      <h2>Sign in to AI Fitness</h2>
+      <p>Welcome back! Please sign in to your account.</p>
+    </div>
+    <div class="login-field">
+      <label for="login-username">Email</label>
+      <input type="email" id="login-username" required placeholder="Your username" autocomplete="username" />
+    </div>
+    <div class="login-field">
+      <label for="login-password">Password</label>
+      <input type="password" id="login-password" required placeholder="Your password" autocomplete="current-password" />
+    </div>
+    <button type="submit" class="login-btn">Sign In</button>
+    <div id="login-error" class="login-error"></div>
+    <div class="login-footer">
+      <a href="#" class="forgot-link">Forgot password?</a>
+    </div>
+  </form>
+</div>
+
+
+<div id="app-container" class="main-container">
+  <nav class="sidebar">
+    <div class="logo">
+      AI Fitness 
+      <span>Your Personal Trainer</span>
+    </div>
+    <ul id="sidebar-menu">
+      <li class="active" data-section="dashboard"><span class="icon"><i class="fa-solid fa-gauge-high"></i></span>Dashboard</li>
+      <li data-section="ai-chat"><span class="icon"><i class="fa-solid fa-comments"></i></span>AI Chat <span class="badge">NEW</span></li>
+      <li data-section="workouts"><span class="icon"><i class="fa-solid fa-running"></i></span>Workouts</li>
+      <li data-section="speech"><span class="icon"><i class="fa-solid fa-microphone-lines"></i></span>Speech</li>
+    </ul>
+
+    <button id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+  </nav>
+  
+  <main class="dashboard-area" id="dashboard-area">
+    <!-- Dashboard Section -->
+    <section id="dashboard-section">
+      <div class="welcome-banner">
+        <div class="banner-content">
+          <h2>Welcome back, AI Fitness Assistant ! <span class="emoji"></span></h2>
+          <p>Ready to crush your fitness goals today?</p>
+          <button id="start-workout"><i class="fa-solid fa-dumbbell"></i> Start Today's Workout</button>
+        </div>
+      </div>
+      <div class="dashboard-cards-row">
+        <div class="dashboard-card">
+          <div class="card-title"><i class="fa-solid fa-calendar-check"></i>Weekly Workouts</div>
+          <div class="card-value" id="workouts-count">15</div>
+          <div class="card-sub">+20% from last week</div>
+        </div>
+        <div class="dashboard-card">
+          <div class="card-title"><i class="fa-solid fa-fire-flame-curved"></i>Calories Burned</div>
+          <div class="card-value" id="calories-count">2,430</div>
+          <div class="card-sub">This week</div>
+        </div>
+        <div class="dashboard-card">
+          <div class="card-title"><i class="fa-solid fa-hourglass-start"></i>Total Time</div>
+          <div class="card-value" id="total-time">8.5h</div>
+          <div class="card-sub">This week</div>
+        </div>
+        <div class="dashboard-card">
+          <div class="card-title"><i class="fa-solid fa-bullseye"></i>Goal Progress</div>
+          <div class="card-value" id="goal-progress">92%</div>
+          <div class="card-sub">Monthly target</div>
+        </div>
+      </div>
+      <div class="widget-row">
+        <div class="widget-graph">
+          <div class="widget-title">Weekly Activity</div>
+          <canvas id="weeklyActivityChart"></canvas>
+        </div>
+        <div class="widget-bar">
+          <div class="widget-title">Calories Burned</div>
+          <canvas id="caloriesBurnedChart"></canvas>
+        </div>
+      </div>
+      <div class="widgets-pair">
+        <section class="quick-workouts-section">
+          <div class="quick-title"><i class="fa-regular fa-circle-play"></i>Quick Workouts</div>
+          <ul class="quick-workout-list">
+            <li class="quick-workout-item">
+              <img class="quick-workout-img" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=compress&w=100&q=80" alt="Morning Cardio">
+              <div class="quick-workout-meta">
+                <div><span class="quick-workout-title">Morning Cardio</span></div>
+                <span class="quick-workout-time">20 min</span>
+              </div>
+              <span class="quick-workout-level">Beginner</span>
+            </li>
+            <li class="quick-workout-item">
+              <img class="quick-workout-img" src="https://images.pexels.com/photos/2261483/pexels-photo-2261483.jpeg?auto=compress&w=100&q=80" alt="Upper Body Strength">
+              <div class="quick-workout-meta">
+                <div><span class="quick-workout-title">Upper Body Strength</span></div>
+                <span class="quick-workout-time">35 min</span>
+              </div>
+              <span class="quick-workout-level">Intermediate</span>
+            </li>
+            <li class="quick-workout-item">
+              <img class="quick-workout-img" src="https://images.pexels.com/photos/317157/pexels-photo-317157.jpeg?auto=compress&w=100&q=80" alt="Yoga Flow">
+              <div class="quick-workout-meta">
+                <div><span class="quick-workout-title">Yoga Flow</span></div>
+                <span class="quick-workout-time">25 min</span>
+              </div>
+              <span class="quick-workout-level">Beginner</span>
+            </li>
+            <li class="quick-workout-item">
+              <img class="quick-workout-img" src="https://images.pexels.com/photos/3757957/pexels-photo-3757957.jpeg" alt="Woman doing HIIT workout">
+              <div class="quick-workout-meta">
+                <div><span class="quick-workout-title">HIIT Training</span></div>
+                <span class="quick-workout-time">15 min</span>
+              </div>
+              <span class="quick-workout-level">Advanced</span>
+            </li>
+          </ul>
+        </section>
+        <section class="schedule-section">
+          <div class="schedule-title"><i class="fa-regular fa-calendar"></i>Today's Schedule</div>
+          <ul class="schedule-list">
+            <li class="schedule-item">
+              <img class="schedule-icon-img" src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=compress&w=100&q=80" alt="Morning Yoga"/>
+              <div class="schedule-info">
+                <span class="schedule-title">Morning Yoga</span>
+                <span class="schedule-time">8:00 AM - 8:30 AM</span>
+              </div>
+              <span class="schedule-badge">Scheduled</span>
+            </li>
+            <li class="schedule-item">
+              <img class="schedule-icon-img" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=compress&w=100&q=80" alt="Lunch Break Walk"/>
+              <div class="schedule-info">
+                <span class="schedule-title">Lunch Break Walk</span>
+                <span class="schedule-time">12:30 PM - 1:00 PM</span>
+              </div>
+              <span class="schedule-badge upcoming">Upcoming</span>
+            </li>
+            <li class="schedule-item">
+              <img class="schedule-icon-img" src="https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=compress&w=400&q=80"  alt="Evening Strength"/>
+              <div class="schedule-info">
+                <span class="schedule-title">Evening Strength</span>
+                <span class="schedule-time">6:00 PM - 7:00 PM</span>
+              </div>
+              <span class="schedule-badge">Scheduled</span>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </section>
+    <!-- AI Chat Section -->
+    <section id="ai-chat-section" style="display:none;">
+      <div class="chat-container">
+        <div class="ai-chat-main">
+          <div class="ai-chat-header">AI Chat Assistant</div>
+          <div style="font-size:1.09em;color:#3166a9;margin-bottom:18px;">
+            <div class="ai-chat-list" id="chatList">
+              <div class="ai-chat-row assistant">
+                <div class="ai-chat-bubble">
+                  Hello! I'm your AI fitness assistant. I can help you with workout plans, nutrition advice, and wellness tips. How can I assist you today?
+                </div>
+              </div>
+            </div>
+            <form class="ai-chat-input-row" id="chatForm" onsubmit="event.preventDefault();submitChat();">
+              <input type="text" class="ai-chat-input" id="chatInput" placeholder="Ask something..." autocomplete="off" />
+              <button class="ai-chat-btn" id="sendBtn" type="submit">Send</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Speech Section -->
+    <section id="speech-section" style="display:none;">
+      <div class="speech-section">
+        <div class="speech-title"><i class="fa-solid fa-microphone-lines"></i> Speech Assistant</div>
+        <button class="mic-btn" id="startStopMic"><i class="fa-solid fa-microphone"></i> Start Recording</button>
+        <div class="speech-transcript" id="transcriptBox">(Transcript will appear here)</div>
+      </div>
+    </section>
+    <!-- Workouts Section -->
+    <section id="workouts-section" style="display:none;">
+      <div class="workout-section-container">
+        <div class="workout-section-header">
+          <h2>Workout Recommendations</h2>
+          <p>Personalized workouts based on your goals and preferences</p>
+        </div>
+        <div class="workout-filter-row">
+          <button class="workout-filter-btn active" data-filter="all">Recommended</button>
+          <button class="workout-filter-btn" data-filter="cardio">Cardio</button>
+          <button class="workout-filter-btn" data-filter="strength">Strength</button>
+          <button class="workout-filter-btn" data-filter="flexibility">Flexibility</button>
+        </div>
+        <div class="workout-grid" id="workoutGrid">
+          <!-- Full Body HIIT -->
+          <div class="workout-card" data-type="cardio">
+            <div class="workout-img-frame"><img src="https://images.pexels.com/photos/1812964/pexels-photo-1812964.jpeg" alt="Woman doing HIIT workout"></div>
+            <span class="workout-badge intermediate">Intermediate</span>
+            <span class="workout-rating"><i class="fa-solid fa-star"></i> 4.8</span>
+            <div class="workout-card-content">
+              <span class="workout-title">Full Body HIIT</span>
+              <span class="workout-type">Cardio</span>
+              <div class="workout-meta-row">
+                <span><i class="fa-regular fa-clock"></i>25 min</span>
+                <span><i class="fa-solid fa-bolt"></i>300 cal</span>
+              </div>
+              <span class="workout-equip">Equipment: None</span>
+              <div class="workout-extra">High-intensity interval training targeting all major muscle groups</div>
+              <div class="workout-exercise-row">
+                <span class="exercise-chip">Burpees</span>
+                <span class="exercise-chip">Mountain Climbers</span>
+                <span class="exercise-chip">Jump Squats</span>
+                <span class="exercise-chip hidden-exercise">Push Ups</span>
+                <span class="exercise-chip hidden-exercise">Lunges</span>
+              </div>
+            </div>
+          </div>
+          <!-- Upper Body Strength -->
+          <div class="workout-card" data-type="strength">
+            <div class="workout-img-frame"><img src="https://images.pexels.com/photos/2261483/pexels-photo-2261483.jpeg?auto=compress&w=400&q=80" alt="Upper Body Strength"></div>
+            <span class="workout-badge beginner">Beginner</span>
+            <span class="workout-rating"><i class="fa-solid fa-star"></i> 4.6</span>
+            <div class="workout-card-content">
+              <span class="workout-title">Upper Body Strength</span>
+              <span class="workout-type">Strength</span>
+              <div class="workout-meta-row">
+                <span><i class="fa-regular fa-clock"></i>40 min</span>
+                <span><i class="fa-solid fa-bolt"></i>250 cal</span>
+              </div>
+              <span class="workout-equip">Equipment: Dumbbells</span>
+              <div class="workout-extra">Build upper body strength with targeted dumbbell exercises</div>
+              <div class="workout-exercise-row">
+                <span class="exercise-chip">Chest Press</span>
+                <span class="exercise-chip">Shoulder Press</span>
+                <span class="exercise-chip">Bicep Curls</span>
+                <span class="exercise-chip hidden-exercise">Tricep Extensions</span>
+                <span class="exercise-chip hidden-exercise">Lateral Raises</span>
+              </div>
+            </div>
+          </div>
+          <!-- Yoga Flow -->
+          <div class="workout-card" data-type="flexibility">
+            <div class="workout-img-frame"><img src="https://images.pexels.com/photos/317157/pexels-photo-317157.jpeg?auto=compress&w=400&q=80" alt="Yoga Flow"></div>
+            <span class="workout-badge beginner">Beginner</span>
+            <span class="workout-rating"><i class="fa-solid fa-star"></i> 4.9</span>
+            <div class="workout-card-content">
+              <span class="workout-title">Yoga Flow</span>
+              <span class="workout-type">Flexibility</span>
+              <div class="workout-meta-row">
+                <span><i class="fa-regular fa-clock"></i>30 min</span>
+                <span><i class="fa-solid fa-bolt"></i>150 cal</span>
+              </div>
+              <span class="workout-equip">Equipment: Yoga Mat</span>
+              <div class="workout-extra">Gentle yoga flow to improve flexibility and reduce stress</div>
+              <div class="workout-exercise-row">
+                <span class="exercise-chip">Sun Salutation</span>
+                <span class="exercise-chip">Warrior Pose</span>
+                <span class="exercise-chip">Downward Dog</span>
+                <span class="exercise-chip hidden-exercise">Triangle Pose</span>
+                <span class="exercise-chip hidden-exercise">Child's Pose</span>
+              </div>
+            </div>
+          </div>
+          <!-- Core Blaster -->
+          <div class="workout-card" data-type="strength">
+            <div class="workout-img-frame"><img src="https://images.pexels.com/photos/416778/pexels-photo-416778.jpeg" alt="Person doing core workout"></div>
+            <span class="workout-badge advanced">Advanced</span>
+            <span class="workout-rating"><i class="fa-solid fa-star"></i> 4.7</span>
+            <div class="workout-card-content">
+              <span class="workout-title">Core Blaster</span>
+              <span class="workout-type">Strength</span>
+              <div class="workout-meta-row">
+                <span><i class="fa-regular fa-clock"></i>20 min</span>
+                <span><i class="fa-solid fa-bolt"></i>180 cal</span>
+              </div>
+              <span class="workout-equip">Equipment: None</span>
+              <div class="workout-extra">Intense core workout to strengthen your abs and stabilize your spine</div>
+              <div class="workout-exercise-row">
+                <span class="exercise-chip">Russian Twists</span>
+                <span class="exercise-chip">Bicycle Crunches</span>
+                <span class="exercise-chip">Plank Variation</span>
+                <span class="exercise-chip hidden-exercise">Leg Raises</span>
+                <span class="exercise-chip hidden-exercise">Flutter Kicks</span>
+              </div>
+            </div>
+          </div>
+          <!-- Morning Cardio -->
+          <div class="workout-card" data-type="cardio">
+            <div class="workout-img-frame"><img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=compress&w=400&q=80" alt="Morning Cardio"></div>
+            <span class="workout-badge intermediate">Intermediate</span>
+            <span class="workout-rating"><i class="fa-solid fa-star"></i> 4.6</span>
+            <div class="workout-card-content">
+              <span class="workout-title">Morning Cardio</span>
+              <span class="workout-type">Cardio</span>
+              <div class="workout-meta-row">
+                <span><i class="fa-regular fa-clock"></i>28 min</span>
+                <span><i class="fa-solid fa-bolt"></i>280 cal</span>
+              </div>
+              <span class="workout-equip">Equipment: None</span>
+              <div class="workout-extra">Energizing cardio workout to start your day right</div>
+              <div class="workout-exercise-row">
+                <span class="exercise-chip">Jumping Jacks</span>
+                <span class="exercise-chip">High Knees</span>
+                <span class="exercise-chip">Butt Kicks</span>
+                <span class="exercise-chip hidden-exercise">Skater Jumps</span>
+                <span class="exercise-chip hidden-exercise">Mountain Climbers</span>
+              </div>
+            </div>
+          </div>
+          <!-- Lower Body Power -->
+          <div class="workout-card" data-type="strength">
+            <div class="workout-img-frame"><img src="https://images.pexels.com/photos/1552249/pexels-photo-1552249.jpeg" alt="Person doing lower body exercise"></div>
+            <span class="workout-badge advanced">Advanced</span>
+            <span class="workout-rating"><i class="fa-solid fa-star"></i> 4.6</span>
+            <div class="workout-card-content">
+              <span class="workout-title">Lower Body Power</span>
+              <span class="workout-type">Strength</span>
+              <div class="workout-meta-row">
+                <span><i class="fa-regular fa-clock"></i>45 min</span>
+                <span><i class="fa-solid fa-bolt"></i>350 cal</span>
+              </div>
+              <span class="workout-equip">Equipment: Dumbbells, Resistance Bands</span>
+              <div class="workout-extra">Power through this intense lower body strength session</div>
+              <div class="workout-exercise-row">
+                <span class="exercise-chip">Squat</span>
+                <span class="exercise-chip">Lunges</span>
+                <span class="exercise-chip">Deadlifts</span>
+                <span class="exercise-chip hidden-exercise">Step Ups</span>
+                <span class="exercise-chip hidden-exercise">Glute Bridge</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="personalize-cont">
+          <div class="personalize-title"><i class="fa-solid fa-user-gear"></i> Personalize Your Workouts</div>
+          <div class="personalize-row">
+            <div class="pers-item">Fitness Goal: <b>Weight Loss</b></div>
+            <div class="pers-item">Available Time: <b>30–45 minutes</b></div>
+            <div class="pers-item">Preferred Location: <b>Home</b></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="module" src="script.js" defer></script>
+</body>
+</html>
