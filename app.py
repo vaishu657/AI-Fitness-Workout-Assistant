@@ -1,8 +1,8 @@
 import os
 from flask import Flask, send_from_directory
 from config import Config
-from backend.extensions import db, migrate, cors
-from backend.models import User, Exercise
+from extensions import db, migrate, cors
+from models import User, Exercise
 
 def create_app():
     app = Flask(
@@ -73,3 +73,4 @@ if __name__ == "__main__":
         db.create_all()
         seed_db(app)
     app.run(debug=True, host="127.0.0.1", port=5000)
+
