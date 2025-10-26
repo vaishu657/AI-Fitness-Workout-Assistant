@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..services.speech_service import transcribe_file, tts_to_base64
+from speech_service import transcribe_file, tts_to_base64
 
 speech_bp = Blueprint("speech", __name__, url_prefix="/api/speech")
 
@@ -19,3 +19,4 @@ def tts():
         return jsonify({"ok": False, "msg": "Missing text"}), 400
     b64 = tts_to_base64(text)
     return jsonify({"ok": True, "audio_base64": b64})
+
