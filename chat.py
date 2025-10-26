@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..services.nlp_service import parse_message, generate_reply
+from nlp_service import parse_message, generate_reply
 from models import Exercise
 from extensions import db
 
@@ -35,4 +35,5 @@ def chat():
         "parsed": parsed,
         "exercises": exercises_json
     })
+
 
