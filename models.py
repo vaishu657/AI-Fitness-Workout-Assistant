@@ -1,4 +1,4 @@
-from .extensions import db
+from extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
@@ -46,3 +46,4 @@ class WorkoutLog(db.Model):
 
     def to_dict(self):
         return {"id": self.id, "user_id": self.user_id, "exercise_id": self.exercise_id, "duration": self.duration, "created_at": self.created_at.isoformat()}
+
