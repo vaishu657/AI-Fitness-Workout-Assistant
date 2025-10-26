@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from ..extensions import db
-from ..models import User
+from extensions import db
+from models import User
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/api/auth")
 
@@ -28,3 +28,4 @@ def login():
     if not user or not user.check_password(password):
         return jsonify({"ok": False, "msg": "Invalid credentials"}), 401
     return jsonify({"ok": True, "user": user.to_dict()})
+
