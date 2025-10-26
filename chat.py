@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
-from ..services.nlp_service import parse_message, generate_reply
-from ..models import Exercise
-from ..extensions import db
+from services.nlp_service import parse_message, generate_reply
+from models import Exercise
+from extensions import db
 
 # Define Blueprint
 chat_bp = Blueprint("chat", __name__, url_prefix="/api/chat")
@@ -35,3 +35,4 @@ def chat():
         "parsed": parsed,
         "exercises": exercises_json
     })
+
