@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, request, jsonify, current_app
 from werkzeug.utils import secure_filename
-from ..services.posture_service import analyze_image
+from services.posture_service import analyze_image
 
 posture_bp = Blueprint("posture", __name__, url_prefix="/api/posture")
 
@@ -27,3 +27,4 @@ def posture():
         return jsonify(result)
     else:
         return jsonify({"ok": False, "msg": "Send multipart form with 'image' file"}), 400
+
