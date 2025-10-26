@@ -1,48 +1,53 @@
 import os
-from flask import Flask, send_from_directory
-from config import Config
-from extensions import db, migrate, cors
+from flask import Flask, jsonify
+from flask_cors import CORS
+from extensions import db, migrate
 from models import User, Exercise
 
 def create_app():
-    app = Flask(
-        __name__, 
-        static_folder=os.path.join(os.path.dirname(__file__), "frontend"), 
-        static_url_path="/"
-    )
-    app.config.from_object(Config)
+    app = Flask(__name__)
+    
+    # Configuration for production
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///app.db')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-key-change-in-production')
+    app.config['UPLOAD_FOLDER'] = os.environ.get('UPLOAD_FOLDER', 'uploads')
+    
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
     # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
-    cors.init_app(app, resources={r"/api/*": {"origins": "*"}})
+    CORS(app)
 
     # Register routes
-    from backend.routes.auth import auth_bp
-    from backend.routes.exercises import exercises_bp
-    from backend.routes.chat import chat_bp
-    from backend.routes.posture import posture_bp
-    from backend.routes.speech import speech_bp
+    from auth import auth_bp
+    from exercises import exercises_bp
+    from chat import chat_bp
+    from posture import posture_bp
+    from speech import speech_bp
 
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(exercises_bp)
-    app.register_blueprint(chat_bp)
-    app.register_blueprint(posture_bp)
-    app.register_blueprint(speech_bp)
+    app.register_blueprint(auth_bp, url_prefix='/api')
+    app.register_blueprint(exercises_bp, url_prefix='/api')
+    app.register_blueprint(chat_bp, url_prefix='/api')
+    app.register_blueprint(posture_bp, url_prefix='/api')
+    app.register_blueprint(speech_bp, url_prefix='/api')
 
-    # Serve frontend
+    # Health check routes
     @app.route("/")
     def index():
-        index_path = os.path.join(app.static_folder or "", "index.html")
-        if os.path.exists(index_path):
-            return send_from_directory(app.static_folder, "index.html")
-        return {"ok": True, "msg": "Backend running"}
+        return jsonify({"ok": True, "msg": "AI Fitness Workout Assistant API"})
+    
+    @app.route("/api/health")
+    def health():
+        return jsonify({"status": "healthy", "message": "Backend is running"})
 
     return app
 
+# ✅ CREATE THE APP VARIABLE AT MODULE LEVEL FOR GUNICORN
+app = create_app()
 
-def seed_db(app):
+def seed_db():
     with app.app_context():
         if Exercise.query.first():
             return
@@ -64,13 +69,10 @@ def seed_db(app):
         db.session.commit()
         print("✅ Seeded default exercises.")
 
-
+# Only run this when executing the file directly, not when imported by Gunicorn
 if __name__ == "__main__":
-    app = create_app()
-    data_dir = os.path.join(os.path.dirname(__file__), "data")
-    os.makedirs(data_dir, exist_ok=True)
     with app.app_context():
         db.create_all()
-        seed_db(app)
-    app.run(debug=True, host="127.0.0.1", port=5000)
-
+        seed_db()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=False, host="0.0.0.0", port=port)
