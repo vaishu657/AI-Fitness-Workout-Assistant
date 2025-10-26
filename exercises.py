@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from ..extensions import db
-from ..models import Exercise
+from extensions import db
+from models import Exercise
 
 # 🔹 Rename bp → exercises_bp
 exercises_bp = Blueprint("exercises", __name__, url_prefix="/api/exercises")
@@ -34,3 +34,4 @@ def create_exercise():
     db.session.add(e)
     db.session.commit()
     return jsonify({"ok": True, "exercise": e.to_dict()})
+
