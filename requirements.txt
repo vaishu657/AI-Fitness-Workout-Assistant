@@ -4,4 +4,3 @@ Flask-Migrate==4.0.4
 Flask-CORS==4.0.0
 gunicorn==21.2.0
 Werkzeug==2.3.7
-Pillow==9.5.0  
