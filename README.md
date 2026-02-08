@@ -86,6 +86,4 @@ Users can track workouts, view progress through dashboards, chat with an AI fitn
 
    
 
-7. 
-8. 
-9. 
+
